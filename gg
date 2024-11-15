@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Design and Development Process HTML Template Live Demo</title>
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no,width=device-width">
+    <link href="//capp.nicepage.com/a5ce6ea3e7742e633a415674257b7402eece26d3/main-libs.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Open+Sans:200,300,400,700,800,900&subset=latin" rel="preload" as="font" />
+    
+    <script src="//capp.nicepage.com/a5ce6ea3e7742e633a415674257b7402eece26d3/main-libs.js"></script>
+    <script src="https://cdn.amplitude.com/libs/amplitude-5.2.2-min.gz.js"></script>
+
+    <script>
+        window.isAuthenticated = 0; 
+        window.clientUser Id = 0; 
+        window.np_userId = '';
+        var amplitudeInitialized = false;
+
+        function sendAnalyticsData(eventType, props) {
+            $.ajax({
+                type: 'POST',
+                url: '/Feedback/SendAdsLog',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ userToken: window.np_userId, data: props }),
+                dataType: 'json'
+            });
+        }
+
+        function initializeAmplitudeUser () {
+            if (amplitudeInitialized) return;
+            amplitudeInitialized = true;
+            amplitude.getInstance().init("878f4709123a5451aff838c1f870b849");
+            if (window.clientUser Id > 0) {
+                amplitude.getInstance().setUser Id(window.clientUser Id);
+            }
+        }
+
+        function sendAmplitudeAnalyticsData(eventName, eventProperties) {
+            initializeAmplitudeUser ();
+            amplitude.getInstance().logEvent(eventName, eventProperties);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            sendAmplitudeAnalyticsData('Page View', { page: window.location.pathname });
+        });
+    </script>
+    
+    <style>
+        body, html { height: 100%; margin: 0; }
+        .page-preview { height: 100%; }
+        .page-preview-header { background: #f2f2f2; height: 70px; text-align: center; }
+        .page-preview-header > a { display: inline-block; margin-top: 15px; padding: 4px; cursor: pointer; }
+        .page-preview-body { height: calc(100% - 70px); text-align: center; }
+        iframe { border: none; height: 100%; width: 100%; }
+    </style>
+</head>
+<body>
+    <div class="page-preview">
+        <div class="page-preview-header">
+            <a href="#" id="previewDesktopBtn" data-preview-size="100%">Desktop</a>
+            <a href="#" id="previewLaptopBtn" data-preview-size="1040px">Laptop</a>
+            <a href="#" id="previewTabletBtn" data-preview-size="820px">Tablet</a>
+            <a href="#" id="previewPhoneHorizontalBtn" data-preview-size="640px">Phone Horizontal</a>
+            <a href="#" id="previewPhoneBtn" data-preview-size="440px">Phone</a>
+            <a class="close" href="/"><img alt="Close" src="//csite.nicepage.com/Images/icon-close.png"></a>
+        </div>
+        <div class="page-preview-body">
+            <iframe id="livePreviewFrame" src="https://website3057676.nicepage.io/Page-6.html" width="1057" height="640"></iframe>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.page-preview-header a').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelectorAll('.page-preview-header a').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('livePreviewFrame').style.width = this.getAttribute('data-preview-size');
+            });
+        });
+    </script>
+</body>
+</html>
+
+Найти еще
